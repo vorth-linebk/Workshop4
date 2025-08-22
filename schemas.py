@@ -9,6 +9,14 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str = Field(min_length=6)
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "email": "somchai@example.com",
+                "password": "P@ssw0rd",
+            }
+        }
+
 
 class Token(BaseModel):
     access_token: str
@@ -40,7 +48,14 @@ class ProfileCreate(ProfileBase):
 
 
 class ProfileUpdate(ProfileBase):
-    pass
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "first_name": "สมชาย",
+                "last_name": "ใจดี",
+                "phone": "081-234-5678",
+            }
+        }
 
 
 class ProfileOut(ProfileBase):
@@ -50,3 +65,19 @@ class ProfileOut(ProfileBase):
 
     class Config:
         from_attributes = True
+        json_schema_extra = {
+            "example": {
+                "id": 1,
+                "user_id": 1,
+                "first_name": "สมชาย",
+                "last_name": "ใจดี",
+                "phone": "081-234-5678",
+                "account": {
+                    "email": "somchai@example.com",
+                    "join_date": "2023-06-15",
+                    "membership_level": "Gold",
+                    "points_balance": 15420,
+                    "member_code": "LBK001234",
+                },
+            }
+        }

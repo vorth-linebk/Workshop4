@@ -59,7 +59,12 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
     return user
 
 
-@router.post("/register", response_model=Token)
+@router.post(
+    "/register",
+    response_model=Token,
+    summary="ลงทะเบียนผู้ใช้ใหม่",
+    description="สมัครสมาชิกด้วยอีเมลและรหัสผ่าน จากนั้นส่งคืน JWT access token.",
+)
 def register_user(data: UserCreate, db: Session = Depends(get_db)):
     existing = db.query(User).filter(User.email == data.email).first()
     if existing:
@@ -78,7 +83,12 @@ def register_user(data: UserCreate, db: Session = Depends(get_db)):
     return Token(access_token=token)
 
 
-@router.post("/login", response_model=Token)
+@router.post(
+    "/login",
+    response_model=Token,
+    summary="เข้าสู่ระบบ",
+    description="รับโทเค็นด้วย OAuth2 Password (username=email).",
+)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == form_data.username).first()
     if not user or not verify_password(form_data.password, user.hashed_password):

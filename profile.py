@@ -12,7 +12,12 @@ from schemas import ProfileOut, ProfileUpdate, ProfileAccountInfo
 router = APIRouter(prefix="/profile", tags=["profile"])
 
 
-@router.get("/me", response_model=ProfileOut)
+@router.get(
+    "/me",
+    response_model=ProfileOut,
+    summary="ดูโปรไฟล์ของฉัน",
+    description="ดึงข้อมูลโปรไฟล์ของผู้ใช้ที่ล็อกอินอยู่ รวมอีเมล ระดับสมาชิก และแต้มที่เหลือ.",
+)
 def get_my_profile(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
@@ -39,7 +44,12 @@ def get_my_profile(
     )
 
 
-@router.put("/me", response_model=ProfileOut)
+@router.put(
+    "/me",
+    response_model=ProfileOut,
+    summary="แก้ไขโปรไฟล์ของฉัน",
+    description="แก้ไขเฉพาะ first_name, last_name และ phone. ฟิลด์สมาชิก/แต้มเป็นแบบอ่านอย่างเดียว.",
+)
 def update_my_profile(
     payload: ProfileUpdate,
     db: Session = Depends(get_db),
